@@ -1,13 +1,12 @@
-const player =  require ('./api/player');
-const game = require('./api/game');
-const authLocal = require('./auth/local');
-const donations = require('./api/donations');
+const entities = require("./api/entities");
+const services = require("./api/services");
+const line = require("./api/line");
+
 
 function routes (app) {
-  app.use('/api/players', player);
-  app.use('/auth/local', authLocal);
-  app.use('/api/donations', donations);
-  app.use('/api/games', game);
+  app.use('/api/entities', entities);
+  app.use('/api/services', services);
+  app.use('/api/line', line);
 }
 
 module.exports = routes;
