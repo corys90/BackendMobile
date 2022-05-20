@@ -9,7 +9,7 @@ async function controllerGetService(req, res, next){
         if (ent){
             res.status(200).send(ent);
         }else{
-            res.status(400).send({message:"Error al obtener la información del servicio de la entidad."});
+            res.status(400).send({message:"Error  al obtener la información del servicio de la entidad."});
         }
     }else{
         res.status(400).send({message:"Error : se requiere una identificación."});

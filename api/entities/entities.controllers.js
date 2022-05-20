@@ -6,7 +6,7 @@ async function controllerGetAllEntities(req, res, next){
     const ent = await(modelo.getAllEntity());
     console.log("Datos a entregar:", ent);
     if (ent){
-        res.status(200).send(ent);
+        res.status(200).set('Content-Type', 'application/json; charset=utf-8').send(ent);
     }else{
         res.status(400).send({message:"Error al obtener la información de la entidad de la BD."});
     }

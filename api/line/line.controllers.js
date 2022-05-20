@@ -32,10 +32,14 @@ async function controllerPatchCallLinePlace(req, res, next){
                 placeNo: usr.placeNo,
                 attendedBy: assistant.attendedBy
             };
-            const asignacion = modelo.updateAssignAssistantUser(nmAssistant);
-            res.status(200).send(nmAssistant);// devuelve el usuario de la fila que tenga state = 0 en espera.
+            const asignacion = await modelo.updateAssignAssistantUser(nmAssistant);
+            if (asignacion.status === 200){
+                res.status(200).send({status:200, message: asignacion.message, respuesta:asignacion.data});
+            }else{
+                res.status(400).send({status:400,message:"Error al llamar turno en la fila al servicio."});
+            }
         }else{
-            res.status(400).send({message:"Error al llamar turno en la fila al servicio."});
+            res.status(400).send({status:400, message:"Error al llamar turno en la fila al servicio."});
         }
     }
 }
