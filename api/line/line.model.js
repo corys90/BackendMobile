@@ -36,7 +36,7 @@ async function getLine(id, idNit, prefix){
 
 async function getPlaceOnLine(id){
     try {
-        const dt = await Service.findById(id)
+        const dt = await Service.findById(id);
         return(dt);
     } catch (error) {
          console.log("Error en getPlaceOnLine: ", error);       
@@ -178,4 +178,29 @@ async function getLinePlace(servicio){
     }
 }
 
-module.exports = { getLinePlace, getLine, updateAssignAssistantUser };
+async function getLineFromService(idService, idNit, prefix){
+    return ( Service.find({idService, idNit, prefix }));
+}
+async function UpdateStateLinePlace(idService, idNit, prefix, placeNo, state){
+    
+    try {
+         const lugar = await getLineFromService(idService, idNit, prefix);
+         if (lugar){
+                // Una vez el turno, le cambia el estado
+                const resultado = await Service.findOneAndUpdate({idService, idNit, prefix}).then(lugar => {
+                    const place = lugar.place[placeNo];
+                    place.state = state;
+                    lugar.save();
+                });
+                return({status: 200});
+         }else{
+            return({status: 400})
+         }
+
+    } catch (error) {
+        console.log("Error getting line place: ", error);   
+        return (null);
+    }
+}
+
+module.exports = { getLinePlace, getLine, updateAssignAssistantUser,UpdateStateLinePlace };
