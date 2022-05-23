@@ -44,7 +44,25 @@ async function controllerPatchCallLinePlace(req, res, next){
     }
 }
 
+async function controllerPutUpdateState(req, res, next){   
+
+    //console.log("validación: ", !req.body.idService || !req.body.placeNo || !req.body.state  || !req.body.idNit || !req.body.prefix );
+    // verificar que cumpla con los datos mínimos
+    if (!req.body.idService || (req.body.placeNo === undefined) || (req.body.state=== undefined)  || !req.body.idNit || !req.body.prefix ){
+        res.status(400).send({message:"Faltan datos importantes para actualizar un turno dal servicio."});
+    }else{
+        const bdy = req.body;
+        const ent = await modelo.UpdateStateLinePlace(bdy.idService, bdy.idNit, bdy.prefix, bdy.placeNo, bdy.state);
+        if (ent.status === 200){
+            res.status(200).send({status: 200, message:"Ok"});
+        }else{
+            res.status(400).send({status: 400, message:"Error al update turno en la fila de servicio."});
+        }
+    }
+}
+
 module.exports = {
     controllerPostGetLinePlace,
-    controllerPatchCallLinePlace
+    controllerPatchCallLinePlace,
+    controllerPutUpdateState
 };

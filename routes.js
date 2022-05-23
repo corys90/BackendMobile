@@ -7,6 +7,7 @@ function routes (app) {
   app.use('/api/entities', entities);
   app.use('/api/services', services);
   app.use('/api/line', line);
+  app.use('/api/line', line);
 }
 
 module.exports = routes;
