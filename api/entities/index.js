@@ -2,15 +2,13 @@ const Router = require("express");
 
 const {
     controllerGetAllEntities,
-    controllerCreateEntities,
-    //controllerUpdateEntities // Pendiente por implementar
+    controllerCreateEntities
 } = require("./entities.controllers");
+const { isAuthenticated } = require("../../auth/auth.services");
 
 const router = Router();
 
-router.get("/", controllerGetAllEntities);
-router.post("/", controllerCreateEntities);
-//router.put("/", controllerUpdateEntities); // Pendiente por implementar
-
+router.get("/", isAuthenticated(), controllerGetAllEntities);
+router.post("/", isAuthenticated(), controllerCreateEntities);
 
 module.exports = router;

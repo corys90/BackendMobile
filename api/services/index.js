@@ -1,4 +1,5 @@
 const Router = require("express");
+const { isAuthenticated } = require("../../auth/auth.services");
 
 const {
     controllerGetService,
@@ -8,9 +9,7 @@ const {
 
 const router = Router();
 
-router.get("/:idNit", controllerGetService);
-router.post("/", controllerCreateService);
-//router.put("/", controllerUpdateService); // Pendiente por implementar
-
+router.get("/:idNit", isAuthenticated(), controllerGetService);
+router.post("/", isAuthenticated(), controllerCreateService);
 
 module.exports = router;
