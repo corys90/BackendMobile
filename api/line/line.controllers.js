@@ -1,6 +1,41 @@
 
 const modelo = require("../line/line.model");
 
+async function controllerGetLineState(req, res, next){    
+    // verificar que cumpla con los datos mínimos
+
+    if ((req.params.id === undefined) || (req.query.idNit === undefined) || (req.query.prefix === undefined)){
+        res.status(400).send({message:"Faltan datos importantes para solicitar información a la fila."});
+    }else{
+        const ent = await modelo.getLine(req.params.id, req.query.idNit, req.query.prefix);
+        console.log("linea: ", ent);
+        if (ent.length > 0){
+            //Haga aquí el análisis y cálculo
+            const place = ent[0].place;
+            let sum = 0;
+            let nAtt = 0;
+            let est = -1;
+            place.forEach((element, idx) => {
+                if (element.state === 1){
+                    sum += element.timeDelay;
+                    nAtt++;
+                }
+                // estado para seber si está siendo atendido
+                if ((element.state === 4) || (element.state === 1)){
+                    est = idx    
+                }
+            });
+            const nt = {
+                averageDelay: Math.round(sum/(nAtt ? nAtt : 1)),
+                inAttention: (est + 1)
+            };
+            res.status(200).send({status: 200, message:"Ok", data:nt});
+        }else{
+            res.status(400).send({message:"Error al solicitar información de la fila."});
+        }
+    }
+}
+
 async function controllerPostGetLinePlace(req, res, next){    
     // verificar que cumpla con los datos mínimos
     if (req.body === {}){
@@ -46,9 +81,8 @@ async function controllerPatchCallLinePlace(req, res, next){
 
 async function controllerPutUpdateState(req, res, next){   
 
-    //console.log("validación: ", !req.body.idService || !req.body.placeNo || !req.body.state  || !req.body.idNit || !req.body.prefix );
     // verificar que cumpla con los datos mínimos
-    if (!req.body.idService || (req.body.placeNo === undefined) || (req.body.state=== undefined)  || !req.body.idNit || !req.body.prefix ){
+    if (!req.body.idService || (req.body.placeNo === undefined) || (req.body.state === undefined)  || !req.body.idNit || !req.body.prefix ){
         res.status(400).send({message:"Faltan datos importantes para actualizar un turno dal servicio."});
     }else{
         const bdy = req.body;
@@ -62,6 +96,7 @@ async function controllerPutUpdateState(req, res, next){
 }
 
 module.exports = {
+    controllerGetLineState,
     controllerPostGetLinePlace,
     controllerPatchCallLinePlace,
     controllerPutUpdateState

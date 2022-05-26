@@ -93,22 +93,24 @@ async function updatePlace(turno, usr){
                 let nAtt = 0;
                 let est = -1;
                 fila.place.forEach((element, idx) => {
-                    console.log(idx);
                     if (element.state === 1){
                         sum += element.timeDelay;
                         nAtt++;
                     }
                     // estado para seber si está siendo atendido
-                    if (element.state === 4){
+                    if ((element.state === 4) || (element.state === 1)){
                         est = idx    
                     }
                 });
-                nt = {...nt, 
+
+                nt = {
+                    ...nt, 
                     placeNo: posicion,
                     date: time,
                     averageDelay: Math.round(sum/(nAtt?nAtt:1)),
                     inAttention: (est + 1)
                 };
+                console.log("valores : ", nt);
                 return({status:201, message:"Turno asignado exitósamente!!!", data:nt});
             }else{
                 // nada por ahora....
@@ -181,6 +183,7 @@ async function getLinePlace(servicio){
 async function getLineFromService(idService, idNit, prefix){
     return ( Service.find({idService, idNit, prefix }));
 }
+
 async function UpdateStateLinePlace(idService, idNit, prefix, placeNo, state){
     
     try {

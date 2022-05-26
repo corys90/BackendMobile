@@ -15,6 +15,9 @@ const EntitieSchema = new mongoose.Schema(
     address: {
       type: String,
     },
+    phone: {
+      type: String,
+    },
     lonx: {
         type: Number,
       },
@@ -34,11 +37,13 @@ async function createEntity(entidad){
     
     try {
         const doc = new Entity();
+        
         doc.idNit = entidad.idNit;
         doc.name = entidad.name;
         doc.address = entidad.address;
         doc.lonx = entidad.lonx;
         doc.laty = entidad.laty;
+        doc.phone = entidad.phone;
         doc.description = entidad.description;
         doc.state = entidad.state;
 
