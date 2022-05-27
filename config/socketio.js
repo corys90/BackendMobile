@@ -40,11 +40,6 @@ function connectSocket(server) {
     // canal para conexión random
     socket.on("random", (dTR) => {
       const data = JSON.parse(dTR);
-      console.log("Mensaje de : ", data.de);
-      console.log("Para       : ", data.para);
-      console.log("Tipo Msj   : ", data.typeMsg);
-      console.log("D del juego: ", data.game);
-
       io.emit("random", data);
     });
 

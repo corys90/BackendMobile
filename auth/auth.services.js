@@ -22,9 +22,6 @@ function isAuthenticated(req, res, next) {
     if (!payload) {
       return res.status(401).end();
     }
-    
-    //const player = await getPlayerEmail(payload.email);
-
     next();
     return null;
   });
@@ -37,7 +34,6 @@ function signToken(payload) {
 
 function authLogin(req, res, next) {
   const { userEmail, userName } = req.body;
-  console.log("Login : ", req.body);
   try {
 
     if (!userEmail || !userName){
@@ -45,8 +41,6 @@ function authLogin(req, res, next) {
       .status(401)
       .json({message: "Se requeire un nombre y corrreo de usuario válido." });
     }else{
-
-      // validar si correo cumple sintaxis de correo electrónico
       const token = signToken(req.body);
       return res.status(201).json({token});
     }

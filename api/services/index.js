@@ -4,7 +4,6 @@ const { isAuthenticated } = require("../../auth/auth.services");
 const {
     controllerGetService,
     controllerCreateService,
-    //controllerUpdateService // Pendiente por implementar
 } = require("./services.controllers");
 
 const router = Router();

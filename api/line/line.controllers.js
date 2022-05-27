@@ -4,17 +4,17 @@ const modelo = require("../line/line.model");
 async function controllerGetLineState(req, res, next){    
     // verificar que cumpla con los datos mínimos
 
-    if ((req.params.id === undefined) || (req.query.idNit === undefined) || (req.query.prefix === undefined)){
+    if ((req.params.id === undefined) || (req.query.idNit === undefined) || (req.query.prefix === undefined)  || (req.query.place === undefined)){
         res.status(400).send({message:"Faltan datos importantes para solicitar información a la fila."});
     }else{
         const ent = await modelo.getLine(req.params.id, req.query.idNit, req.query.prefix);
-        console.log("linea: ", ent);
         if (ent.length > 0){
             //Haga aquí el análisis y cálculo
             const place = ent[0].place;
             let sum = 0;
             let nAtt = 0;
             let est = -1;
+            const nplace = req.query.place - 1;
             place.forEach((element, idx) => {
                 if (element.state === 1){
                     sum += element.timeDelay;
@@ -27,7 +27,8 @@ async function controllerGetLineState(req, res, next){
             });
             const nt = {
                 averageDelay: Math.round(sum/(nAtt ? nAtt : 1)),
-                inAttention: (est + 1)
+                inAttention: (est + 1),
+                state: place[nplace].state 
             };
             res.status(200).send({status: 200, message:"Ok", data:nt});
         }else{
