@@ -15,6 +15,7 @@ async function controllerGetLineState(req, res, next){
             let nAtt = 0;
             let est = -1;
             const nplace = req.query.place - 1;
+
             place.forEach((element, idx) => {
                 if (element.state === 1){
                     sum += element.timeDelay;

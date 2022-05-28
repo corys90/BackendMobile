@@ -22,6 +22,7 @@ function isAuthenticated(req, res, next) {
     if (!payload) {
       return res.status(401).end();
     }
+
     next();
     return null;
   });
@@ -34,6 +35,7 @@ function signToken(payload) {
 
 function authLogin(req, res, next) {
   const { userEmail, userName } = req.body;
+
   try {
 
     if (!userEmail || !userName){
@@ -41,6 +43,7 @@ function authLogin(req, res, next) {
       .status(401)
       .json({message: "Se requeire un nombre y corrreo de usuario válido." });
     }else{
+
       const token = signToken(req.body);
       return res.status(201).json({token});
     }
