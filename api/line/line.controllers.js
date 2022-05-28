@@ -40,11 +40,14 @@ async function controllerGetLineState(req, res, next){
 
 async function controllerPostGetLinePlace(req, res, next){    
     // verificar que cumpla con los datos mínimos
-    if (req.body === {}){
+    console.log("Cuerpo: ", req.body);
+    if ((req.body.idNit === undefined) || (req.body.idService === undefined) 
+        || (req.body.prefix === undefined) || (req.body.name === undefined)){
         res.status(400).send({message:"Faltan datos importantes para pedir un turno al servicio."});
     }else{
         const ent = await modelo.getLinePlace(req.body);
         if (ent.status === 201){
+            console.log("Cuerpo 2: ", req.body, ent);
             res.status(201).send({message:ent.message, turno:ent.data});
         }else{
             res.status(400).send({message:"Error al pedir turno en la fila al servicio."});
@@ -54,7 +57,8 @@ async function controllerPostGetLinePlace(req, res, next){
 
 async function controllerPatchCallLinePlace(req, res, next){
      // verificar que cumpla con los datos mínimos
-     if (req.body === {}){
+     if (((req.body.idNit === undefined) || (req.body.idService === undefined) 
+     || (req.body.prefix === undefined) || (req.body.attendedBy === undefined))){
         res.status(400).send({message:"Falta dato del cajero  que realiza llamado al usuario en turno esperando el servicio."});
     }else{
         const assistant = req.body;
