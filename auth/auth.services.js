@@ -45,6 +45,7 @@ function authLogin(req, res, next) {
       return res.status(201).json({token});
     }
   } catch (error) {
+    console.log("Error: ", error);
     return res.status(400).json(error);
   }
 }

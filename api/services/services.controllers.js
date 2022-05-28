@@ -1,11 +1,11 @@
 
+const { controllerPostGetLinePlace } = require("../line/line.controllers");
 const modelo = require("../services/services.model");
 
 async function controllerGetService(req, res, next){
-
-    if (req.params.idNit){
+    console.log("params sin idmit: ", req.params.idNit);
+    if (req.params.idNit !== undefined){
         const ent = await(modelo.getEntityService(req.params.idNit));
-       
         if (ent){
             res.status(200).send(ent);
         }else{
@@ -18,7 +18,8 @@ async function controllerGetService(req, res, next){
 
 async function controllerCreateService(req, res, next){ 
     // verificar que cumpla con los datos mínimos
-    if (req.body === {}){
+    if ((req.body.idNit === undefined) || (req.body.dateService) 
+    || (req.body.state === undefined) || (req.body.lines === undefined)){
         res.status(400).send({message:"Faltan datos importantes para configurar un servicio."});
     }else{
         const ent = await modelo.createService(req.body);
